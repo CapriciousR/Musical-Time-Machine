@@ -38,9 +38,12 @@ spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID,
 
 track_ids = []
 for song in track_list:
-    tracks = spotify.search(q=f'track:{song} year:{year.split("-")[0]}', limit=2)
-    track_id = tracks['tracks']['items'][0]['id']
-    track_ids.append(track_id)
+    tracks = spotify.search(q=f'track:{song} year:{int(year.split("-")[0])-5}-{int(year.split("-")[0])+5}', limit=2)
+    try:
+        track_id = tracks['tracks']['items'][0]['id']
+        track_ids.append(track_id)
+    except IndexError:
+        continue
     
 print(track_ids)
 
